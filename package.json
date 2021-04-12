@@ -1,0 +1,13 @@
+{
+  "name": "doing-now",
+  "version": "1.0.0",
+  "main": "doing.js",
+  "author": "Ethan Skinner <10249884+el-ethan@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node doing.js"
+  },
+  "bin": {
+    "doing": "./doing.js"
+  }
+}
