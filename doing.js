@@ -1,35 +1,49 @@
 const fs = require('fs')
 
+const doingConfigPath = `${process.env.HOME}/.config/doing`
+const doingFilePath = `${doingConfigPath}/doing.txt`
+
 function doing() {
     const [_a, _b, ...commandInput] = process.argv
-
-    const doingConfigPath = `${process.env.HOME}/.config/doing`
-    const doingFilePath = `${doingConfigPath}/doing.md`
 
     if (!fs.existsSync(doingConfigPath)){
         fs.mkdirSync(doingConfigPath);
     }
 
-    let nLines = 3
-    let whatImDoing = ''
+    const readMode = commandInput[0] === '-C' || commandInput.length === 0
 
-    if (commandInput[0] === '-C') {
-        nLines = commandInput[1]
+    if (readMode) {
+        const nLines = commandInput[1] || 0
+        readEvents(nLines)
     } else {
-        whatImDoing = commandInput.join(' ')
+        const event = createEvent(commandInput.join(' '))
+        writeEvent(event)
     }
+}
 
-    const timestamp = `\n\n***** ${new Date()} *****\n\n`
+function writeEvent(event) {
+    const eventString = `${JSON.stringify(event)}\n`
+    fs.writeFileSync(doingFilePath, eventString, { flag: 'a' })
+}
 
-    if (whatImDoing.length) {
-        fs.writeFileSync(doingFilePath, `${timestamp}${whatImDoing}`, { flag: 'a' })
-    } else if (fs.existsSync(doingFilePath)) {
-        const whatIDid = fs.readFileSync(doingFilePath, 'utf8').split('\n')
-        console.log(whatIDid.splice(whatIDid.length - nLines).join('\n'));
+function limitEvents(events, limit) {
+    const eventCount = events.length
+
+    if (limit === 0 || limit >= eventCount) {
+        return events
+    }
+    return events.splice(eventCount - limit)
+}
+
+function readEvents(nLines) {
+    if (fs.existsSync(doingFilePath)) {
+        const allEvents = fs.readFileSync(doingFilePath, 'utf8')
+        const parsedEvents = parseEvents(allEvents)
+        const limitedEvents = limitEvents(parsedEvents, nLines)
+        console.log(limitedEvents.map(formatEvent).join('\n'));
     } else {
         console.log('You haven\'t done anything yet. Log something you are doing with `doing-now the thing you are doing`')
     }
-
 }
 
 function createEvent(description) {
@@ -44,10 +58,12 @@ function formatEvent(event) {
 }
 
 function parseEvents(eventsString) {
-    return JSON.parse(`[${eventsString.replace('}\n', '},\n')}]`)
+    const events = eventsString.split('\n').filter(Boolean).join(',')
+    return JSON.parse(`[${events}]`)
 }
 
 module.exports = {
     parseEvents,
+    limitEvents,
     doing
 }
