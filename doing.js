@@ -54,7 +54,7 @@ function createEvent(description) {
 }
 
 function formatEvent(event) {
-    return `\n\n# ${event.timestamp}\n\n${event.description}`
+    return `\n\n# ${event.timestamp}\n\n• ${event.description}`
 }
 
 function parseEvents(eventsString) {
@@ -65,5 +65,6 @@ function parseEvents(eventsString) {
 module.exports = {
     parseEvents,
     limitEvents,
+    formatEvent,
     doing
 }

@@ -1,4 +1,4 @@
-const { parseEvents, limitEvents} = require('./doing')
+const { parseEvents, limitEvents, formatEvent} = require('./doing')
 
 describe('limitEvents', () => {
     it('returns all events if limit is 0', () => {
@@ -43,5 +43,16 @@ describe('parseEvents', () => {
             }
         ]
         expect(parseEvents(testData)).toEqual(expectedParsedEvents)
+    });
+});
+
+describe('formatEvent', () => {
+    it('returns event with the expected format', () => {
+        expect(
+            formatEvent({
+                description: 'debug jenkins build failure',
+                timestamp: '2021-04-13T01:13:55.064Z'
+            })
+        ).toEqual('\n\n# 2021-04-13T01:13:55.064Z\n\n• debug jenkins build failure')
     });
 });
