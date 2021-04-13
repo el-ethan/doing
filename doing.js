@@ -42,7 +42,7 @@ function readEvents(nLines) {
         const limitedEvents = limitEvents(parsedEvents, nLines)
         console.log(limitedEvents.map(formatEvent).join('\n'));
     } else {
-        console.log('You haven\'t done anything yet. Log something you are doing with `doing-now the thing you are doing`')
+        console.log('You haven\'t done anything yet. Log something you are doing with `doing the thing you are doing`')
     }
 }
 
