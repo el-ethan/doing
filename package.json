@@ -6,9 +6,13 @@
   "description": "What are you doing now? Whatever it is quickly capture it with this simple command line app. Whenever you have to switch contexts, simply fire of a command to `doing-now` followed by a brief description of what you are \"doing now\" to track all the things you do throughout the day in a flat, timestamped file.",
   "license": "MIT",
   "scripts": {
-    "start": "node doing.js"
+    "start": "node index.js",
+    "test": "jest"
   },
   "bin": {
-    "doing": "./doing.js"
+    "doing": "./index.js"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
   }
 }
