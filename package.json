@@ -13,7 +13,11 @@
     "doing": "./index.js"
   },
   "devDependencies": {
-    "jest": "^26.6.3"
+    "jest": "^27.5.1"
   },
-  "keywords": ["productivity", "notes", "cli"]
+  "keywords": [
+    "productivity",
+    "notes",
+    "cli"
+  ]
 }
