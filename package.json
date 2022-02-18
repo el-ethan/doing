@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "main": "doing.js",
   "author": "Ethan Skinner <10249884+el-ethan@users.noreply.github.com>",
-  "description": "What are you doing now? Whatever it is quickly capture it with this simple command line app. Whenever you have to switch contexts, simply fire of a command to `doing-now` followed by a brief description of what you are \"doing now\" to track all the things you do throughout the day in a flat, timestamped file.",
+  "description": "What are you doing now? Whatever it is quickly capture it with this simple command line app. Whenever you have to switch contexts, simply fire off a command to `doing` followed by a brief description of what you are \"doing now\" to track all the things you do throughout the day in a flat, timestamped file.",
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
