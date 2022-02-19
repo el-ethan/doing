@@ -1,19 +1,35 @@
-const { parseEvents, limitEvents, formatEvent} = require('./doing')
+const { parseEvents, lastNEvents, formatEvent} = require('./doing')
 
-describe('limitEvents', () => {
-    it('returns all events if limit is 0', () => {
+describe('lastNEvents', () => {
+    it('returns no events if limit undefined', () => {
         const events = ['a', 'b']
-        expect(limitEvents(events, 0)).toEqual(events)
+        expect(lastNEvents(events)).toEqual([])
     });
 
     it('returns all events if limit is greater than total events', () => {
         const events = ['a', 'b']
-        expect(limitEvents(events, 5)).toEqual(events)
+        expect(lastNEvents(events, 5)).toEqual(events)
     });
 
     it('returns the last n events if limit of n is provided', () => {
         const events = ['a', 'b', 'c']
-        expect(limitEvents(events, 2)).toEqual(['b', 'c'])
+        expect(lastNEvents(events, 2)).toEqual(['b', 'c'])
+    });
+
+    it('returns all events if n is equal to total events', () => {
+        const events = ['a', 'b', 'c']
+        expect(lastNEvents(events, 3)).toEqual(['a', 'b', 'c'])
+    });
+
+    it('returns all events if n is 0', () => {
+        const events = ['a', 'b', 'c']
+        expect(lastNEvents(events, 0)).toEqual(['a', 'b', 'c'])
+    });
+});
+
+describe('readAllEvents', () => {
+    it('returns all events', () => {
+        
     });
 });
 
@@ -56,3 +72,4 @@ describe('formatEvent', () => {
         ).toEqual('\n\n# 2021-04-13T01:13:55.064Z\n\n• debug jenkins build failure')
     });
 });
+
