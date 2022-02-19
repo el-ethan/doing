@@ -6,18 +6,22 @@ const doingFilePath = `${doingConfigPath}/doing.txt`
 function doing() {
     const [_a, _b, ...commandInput] = process.argv
 
-    if (!fs.existsSync(doingConfigPath)){
-        fs.mkdirSync(doingConfigPath);
-    }
+    createDoingDirectoryUnlessExists();
 
-    const readMode = commandInput[0] === '-C' || commandInput.length === 0
+    const isReadMode = commandInput[0] === '-C' || commandInput.length === 0
 
-    if (readMode) {
+    if (isReadMode) {
         const nLines = commandInput[1] || 0
         readEvents(nLines)
     } else {
         const event = createEvent(commandInput.join(' '))
         writeEvent(event)
+    }
+}
+
+function createDoingDirectoryUnlessExists() {
+    if (!fs.existsSync(doingConfigPath)){
+        fs.mkdirSync(doingConfigPath);
     }
 }
 
