@@ -5,10 +5,12 @@ const doingFilePath = `${doingConfigPath}/doing.txt`
 
 const lastNFlag = '--last'
 const helpFlag = '--help'
+const todayFlag = '--today'
 
 const flagMap = {
     [helpFlag]: help,
-    [lastNFlag]: (nLines) => readEvents(nLines)
+    [lastNFlag]: (nLines) => readEvents(nLines),
+    [todayFlag]: getTodayEvents
 }
 
 
@@ -40,6 +42,13 @@ function doing() {
     writeEvent(event)
 }
 
+function getTodayEvents() {
+    const events = getParsedEvents()
+    const today = new Date().toISOString()
+    const todayEvents = getEventsInDateRange(events, today)
+    logEvents(todayEvents)
+}
+
 function getEventsInDateRange(events, latestDate, earliestDate) {
     return events.filter(event => {
         if (!earliestDate) return event.timestamp.slice(0, 10) === latestDate.slice(0, 10)
@@ -66,15 +75,24 @@ function lastNEvents(events, lastN) {
     return events.splice(eventCount - lastN)
 }
 
-function readEvents(nLines) {
+function getParsedEvents() {
     if (fs.existsSync(doingFilePath)) {
         const allEvents = fs.readFileSync(doingFilePath, 'utf8')
-        const parsedEvents = parseEvents(allEvents)
-        const limitedEvents = lastNEvents(parsedEvents, nLines)
-        console.log(limitedEvents.map(formatEvent).join('\n'));
+        return parsedEvents = parseEvents(allEvents)
     } else {
         console.log('You haven\'t done anything yet. Log something you are doing with the `doing` command, followed by a description of what you are doing.')
+        process.exit(1);
     }
+}
+
+function readEvents(nLines) {
+    const parsedEvents = getParsedEvents()
+    const limitedEvents = lastNEvents(parsedEvents, nLines)
+    logEvents(limitedEvents)
+}
+
+function logEvents(events) {
+    console.log(events.map(formatEvent).join('\n'));
 }
 
 function readAllEvents() {

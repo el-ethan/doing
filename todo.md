@@ -13,3 +13,6 @@
 - [ ] Move todos to repo
 - [ ] add --what, --now, --today, --week, --month
 - [ ] Add test that all new flags are added to docs
+- [ ] color output
+- [ ] update so that there is a filter step determined by flag, and then we just always log out the filtered events at the end
+- [ ] add prettier
