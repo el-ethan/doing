@@ -11,3 +11,4 @@
 - [ ] Add github action to publish new version
 - [ ] Use semantic releases
 - [ ] Move todos to repo
+- [ ] add --what, --now, --today, --week, --month
