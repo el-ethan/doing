@@ -53,7 +53,7 @@ function getTodayEvents() {
 function getEventsInDateRange(events, latestDate, earliestDate) {
     return events.filter(event => {
         if (!earliestDate) return event.timestamp.slice(0, 10) === latestDate.slice(0, 10)
-        return event.timestamp > earliestDate || event.timestamp <= latestDate;
+        return event.timestamp >= earliestDate && event.timestamp <= latestDate;
     })
 }
 

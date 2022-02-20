@@ -65,6 +65,79 @@ describe('getEventsInDateRange', () => {
 
         expect(getEventsInDateRange(events, '2021-04-13T01:13:55.064Z', '2021-04-12T01:13:55.064Z')).toEqual(events)
     });
+
+    it('returns events for range if start and end date passed', () => {
+        const events = [
+            {
+                description: 'stop the DaVinci virus',
+                timestamp: '2021-04-12T01:13:55.064Z'
+            },
+            {
+                description: 'hack the planet',
+                timestamp: '2021-04-13T01:13:55.064Z'
+            }
+        ]
+
+        expect(getEventsInDateRange(events, '2021-04-13T01:13:55.064Z', '2021-04-12T01:13:55.064Z')).toEqual(events)
+    });
+
+    it('does not include events earlier than earliest date', () => {
+        const events = [
+            {
+                description: 'contact Razor and Blade at the weird club',
+                timestamp: '2021-04-12T01:13:55.063Z'
+            },
+            {
+                description: 'stop the DaVinci virus',
+                timestamp: '2021-04-12T01:13:55.064Z'
+            },
+            {
+                description: 'hack the planet',
+                timestamp: '2021-04-13T01:13:55.064Z'
+            }
+        ]
+
+        const expectedEvents = [            
+            {
+            description: 'stop the DaVinci virus',
+            timestamp: '2021-04-12T01:13:55.064Z'
+        },
+        {
+            description: 'hack the planet',
+            timestamp: '2021-04-13T01:13:55.064Z'
+        }
+    ]
+        expect(getEventsInDateRange(events, '2021-04-13T01:13:55.064Z', '2021-04-12T01:13:55.064Z')).toEqual(expectedEvents)
+    });
+
+    it('does not include events later than latest date', () => {
+        const events = [
+            {
+                description: 'stop the DaVinci virus',
+                timestamp: '2021-04-12T01:13:55.064Z'
+            },
+            {
+                description: 'hack the planet',
+                timestamp: '2021-04-13T01:13:55.064Z'
+            },
+            {
+                description: 'contact Razor and Blade at the weird club',
+                timestamp: '2021-04-13T01:13:55.065Z'
+            },
+        ]
+
+        const expectedEvents = [            
+            {
+            description: 'stop the DaVinci virus',
+            timestamp: '2021-04-12T01:13:55.064Z'
+        },
+        {
+            description: 'hack the planet',
+            timestamp: '2021-04-13T01:13:55.064Z'
+        }
+    ]
+        expect(getEventsInDateRange(events, '2021-04-13T01:13:55.064Z', '2021-04-12T01:13:55.064Z')).toEqual(expectedEvents)
+    })
 });
 
 describe('parseEvents', () => {
