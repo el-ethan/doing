@@ -26,9 +26,9 @@ Available options:
 
 function doing() {
     createDoingDirectoryUnlessExists();
-    
+
     const [_a, _b, ...commandInput] = process.argv
-    
+
     if (commandInput.length === 0) {
         return readAllEvents()
     }
@@ -58,7 +58,7 @@ function getEventsInDateRange(events, latestDate, earliestDate) {
 }
 
 function createDoingDirectoryUnlessExists() {
-    if (!fs.existsSync(doingConfigPath)){
+    if (!fs.existsSync(doingConfigPath)) {
         fs.mkdirSync(doingConfigPath);
     }
 }
