@@ -1,4 +1,4 @@
-const { parseEvents, lastNEvents, formatEvent, getEventsInDateRange } = require('./doing')
+const { createEvent, getTodayEvents, parseEvents, lastNEvents, formatEvent, getEventsInDateRange, help, flagMap } = require('./doing')
 
 describe('lastNEvents', () => {
     it('returns no events if limit undefined', () => {
@@ -180,3 +180,46 @@ describe('formatEvent', () => {
     });
 });
 
+describe('help', () => {
+    beforeEach(function () {
+        jest.spyOn(console, 'log');
+    })
+
+    it('includes help text for all commands', () => {
+        help()
+        Object.keys(flagMap).forEach(commandFlag => {
+            expect(console.log).toHaveBeenCalledWith(expect.stringContaining(commandFlag))
+        })
+    });
+});
+
+describe('getTodayEvents', () => {
+    it('should log only events for today', () => {
+        const today = new Date().toISOString()
+        const events = [
+            {
+                description: 'hack the planet',
+                timestamp: '2021-04-13T01:13:55.064Z'
+            },
+            {
+                description: 'stop the DaVinci virus',
+                timestamp: today
+            },
+        ]
+        const expectedEvents = [
+            {
+                description: 'stop the DaVinci virus',
+                timestamp: today
+            },
+        ]
+
+        expect(getTodayEvents(events)).toEqual(expectedEvents)
+    });
+});
+
+describe('createEvent', () => {
+    it('should create a new event object with the date', () => {
+        const today = new Date().toISOString()
+        expect(createEvent('hello world', today)).toEqual({description: 'hello world', timestamp: today})
+    });
+});

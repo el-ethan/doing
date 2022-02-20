@@ -16,3 +16,4 @@
 - [ ] color output
 - [ ] update so that there is a filter step determined by flag, and then we just always log out the filtered events at the end
 - [ ] add prettier
+- [ ] raise a clear error if an invalid command flag is passed

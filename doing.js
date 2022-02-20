@@ -7,9 +7,13 @@ const lastNFlag = '--last'
 const helpFlag = '--help'
 const todayFlag = '--today'
 
+/* 
+    Filter functions take the events as the first argument,
+    and the flag arguments as the second
+*/
 const flagMap = {
     [helpFlag]: help,
-    [lastNFlag]: getLastNEvents,
+    [lastNFlag]: lastNEvents,
     [todayFlag]: getTodayEvents
 }
 
@@ -22,32 +26,42 @@ Available options:
 --last n: log the last n events. If n is 0, log all events.
 --today: log events captured today.
     `)
-    process.exit(0);
 }
 
 function doing() {
     createDoingDirectoryUnlessExists();
+    
+
 
     const [_a, _b, ...commandInput] = process.argv
+    
+    const firstPieceOfInput = commandInput[0]
 
-    if (commandInput.length === 0) {
-        return logEvents(getAllEvents())
+    if (firstPieceOfInput === helpFlag) {
+        help()
+        process.exit(0)
+    }
+    
+    const parsedEvents = getParsedEvents()
+    
+    if (!firstPieceOfInput) {
+        return logEvents(lastNEvents(parsedEvents, 0))
     }
 
-    const firstPieceOfInput = commandInput[0]
     const hasCommandFlag = firstPieceOfInput?.startsWith('--')
 
     if (hasCommandFlag) {
-        const filteredEvents = flagMap[firstPieceOfInput](commandInput[1])
-        logEvents(filteredEvents)
+        const filterFunction = flagMap[firstPieceOfInput]
+        const filteredEvents = filterFunction(parsedEvents, commandInput[1])
+        logEvents(filteredEvents || [])
     } else {
-        const event = createEvent(commandInput.join(' '))
+        const timestamp = new Date().toISOString()
+        const event = createEvent(commandInput.join(' '), timestamp)
         writeEvent(event)
     }
 }
 
-function getTodayEvents() {
-    const events = getParsedEvents()
+function getTodayEvents(events) {
     const today = new Date().toISOString()
     return getEventsInDateRange(events, today)
 }
@@ -79,35 +93,28 @@ function lastNEvents(events, lastN) {
 }
 
 function getParsedEvents() {
-    if (fs.existsSync(doingFilePath)) {
-        const allEvents = fs.readFileSync(doingFilePath, 'utf8')
-        return parsedEvents = parseEvents(allEvents)
-    } else {
-        console.log('You haven\'t done anything yet. Log something you are doing with the `doing` command, followed by a description of what you are doing.')
-        process.exit(1);
+    if (!fs.existsSync(doingFilePath)) {
+        return []
     }
-}
-
-function getLastNEvents(nLines) {
-    const parsedEvents = getParsedEvents()
-    return lastNEvents(parsedEvents, nLines)
+    const allEvents = fs.readFileSync(doingFilePath, 'utf8')
+    return parseEvents(allEvents)
 }
 
 function logEvents(events) {
+    if (!events.length) {
+        console.log('You haven\'t done anything yet. Capture something you are doing with the `doing` command, followed by a description of what you are doing.')
+        process.exit(0);
+    }
     console.log(events.map(formatEvent).join('\n'));
     const lastEvent = events[events.length - 1].description
     // log a dashed line the same length as the final event description
     console.log(Array.from(lastEvent + '__', () => '_').join(''))
 }
 
-function getAllEvents() {
-    return getLastNEvents(0)
-}
-
-function createEvent(description) {
+function createEvent(description, timestamp) {
     return {
         description,
-        timestamp: new Date()
+        timestamp
     }
 }
 
@@ -125,5 +132,9 @@ module.exports = {
     lastNEvents,
     formatEvent,
     doing,
-    getEventsInDateRange
+    getEventsInDateRange,
+    help,
+    flagMap,
+    getTodayEvents,
+    createEvent
 }
