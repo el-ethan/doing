@@ -9,7 +9,7 @@ const todayFlag = '--today'
 
 const flagMap = {
     [helpFlag]: help,
-    [lastNFlag]: (nLines) => readEvents(nLines),
+    [lastNFlag]: getLastNEvents,
     [todayFlag]: getTodayEvents
 }
 
@@ -31,13 +31,15 @@ function doing() {
     const [_a, _b, ...commandInput] = process.argv
 
     if (commandInput.length === 0) {
-        return readAllEvents()
+        return logEvents(getAllEvents())
     }
 
     const firstPieceOfInput = commandInput[0]
+    const hasCommandFlag = firstPieceOfInput?.startsWith('--')
 
-    if (firstPieceOfInput?.startsWith('--')) {
-        return flagMap[firstPieceOfInput](commandInput[1])
+    if (hasCommandFlag) {
+        const filteredEvents = flagMap[firstPieceOfInput](commandInput[1])
+        logEvents(filteredEvents)
     } else {
         const event = createEvent(commandInput.join(' '))
         writeEvent(event)
@@ -47,8 +49,7 @@ function doing() {
 function getTodayEvents() {
     const events = getParsedEvents()
     const today = new Date().toISOString()
-    const todayEvents = getEventsInDateRange(events, today)
-    logEvents(todayEvents)
+    return getEventsInDateRange(events, today)
 }
 
 function getEventsInDateRange(events, latestDate, earliestDate) {
@@ -87,10 +88,9 @@ function getParsedEvents() {
     }
 }
 
-function readEvents(nLines) {
+function getLastNEvents(nLines) {
     const parsedEvents = getParsedEvents()
-    const limitedEvents = lastNEvents(parsedEvents, nLines)
-    logEvents(limitedEvents)
+    return lastNEvents(parsedEvents, nLines)
 }
 
 function logEvents(events) {
@@ -100,8 +100,8 @@ function logEvents(events) {
     console.log(Array.from(lastEvent + '__', () => '_').join(''))
 }
 
-function readAllEvents() {
-    readEvents(0)
+function getAllEvents() {
+    return getLastNEvents(0)
 }
 
 function createEvent(description) {
