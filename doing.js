@@ -22,6 +22,7 @@ Available options:
 --last n: log the last n events. If n is 0, log all events.
 --today: log events captured today.
     `)
+    process.exit(0);
 }
 
 function doing() {
@@ -37,10 +38,10 @@ function doing() {
 
     if (firstPieceOfInput?.startsWith('--')) {
         return flagMap[firstPieceOfInput](commandInput[1])
+    } else {
+        const event = createEvent(commandInput.join(' '))
+        writeEvent(event)
     }
-
-    const event = createEvent(commandInput.join(' '))
-    writeEvent(event)
 }
 
 function getTodayEvents() {
