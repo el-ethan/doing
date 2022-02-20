@@ -97,16 +97,16 @@ describe('getEventsInDateRange', () => {
             }
         ]
 
-        const expectedEvents = [            
+        const expectedEvents = [
             {
-            description: 'stop the DaVinci virus',
-            timestamp: '2021-04-12T01:13:55.064Z'
-        },
-        {
-            description: 'hack the planet',
-            timestamp: '2021-04-13T01:13:55.064Z'
-        }
-    ]
+                description: 'stop the DaVinci virus',
+                timestamp: '2021-04-12T01:13:55.064Z'
+            },
+            {
+                description: 'hack the planet',
+                timestamp: '2021-04-13T01:13:55.064Z'
+            }
+        ]
         expect(getEventsInDateRange(events, '2021-04-13T01:13:55.064Z', '2021-04-12T01:13:55.064Z')).toEqual(expectedEvents)
     });
 
@@ -126,23 +126,23 @@ describe('getEventsInDateRange', () => {
             },
         ]
 
-        const expectedEvents = [            
+        const expectedEvents = [
             {
-            description: 'stop the DaVinci virus',
-            timestamp: '2021-04-12T01:13:55.064Z'
-        },
-        {
-            description: 'hack the planet',
-            timestamp: '2021-04-13T01:13:55.064Z'
-        }
-    ]
+                description: 'stop the DaVinci virus',
+                timestamp: '2021-04-12T01:13:55.064Z'
+            },
+            {
+                description: 'hack the planet',
+                timestamp: '2021-04-13T01:13:55.064Z'
+            }
+        ]
         expect(getEventsInDateRange(events, '2021-04-13T01:13:55.064Z', '2021-04-12T01:13:55.064Z')).toEqual(expectedEvents)
     })
 });
 
 describe('parseEvents', () => {
     it('parses event data from string', () => {
-        const testData =`{"description": "debug jenkins build failure","timestamp": "2021-04-13T01:13:55.064Z"}
+        const testData = `{"description": "debug jenkins build failure","timestamp": "2021-04-13T01:13:55.064Z"}
             {"description": "Troubleshoot dependency issues","timestamp": "2021-04-13T03:13:55.064Z"}`
         const expectedParsedEvents = [
             {
@@ -158,7 +158,7 @@ describe('parseEvents', () => {
     });
 
     it('parses a single event correctly', () => {
-        const testData =`{"description": "debug jenkins build failure","timestamp": "2021-04-13T01:13:55.064Z"}\n`
+        const testData = `{"description": "debug jenkins build failure","timestamp": "2021-04-13T01:13:55.064Z"}\n`
         const expectedParsedEvents = [
             {
                 description: 'debug jenkins build failure',
