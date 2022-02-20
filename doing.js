@@ -40,6 +40,12 @@ function doing() {
     writeEvent(event)
 }
 
+function getEventsInDateRange(events, startDate, endDate) {
+    return events.filter(event => {
+        return event.timestamp.slice(0, 10) === startDate.slice(0, 10)
+    })
+}
+
 function createDoingDirectoryUnlessExists() {
     if (!fs.existsSync(doingConfigPath)){
         fs.mkdirSync(doingConfigPath);
@@ -94,5 +100,6 @@ module.exports = {
     parseEvents,
     lastNEvents,
     formatEvent,
-    doing
+    doing,
+    getEventsInDateRange
 }

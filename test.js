@@ -1,4 +1,4 @@
-const { parseEvents, lastNEvents, formatEvent} = require('./doing')
+const { parseEvents, lastNEvents, formatEvent, getEventsInDateRange } = require('./doing')
 
 describe('lastNEvents', () => {
     it('returns no events if limit undefined', () => {
@@ -27,9 +27,28 @@ describe('lastNEvents', () => {
     });
 });
 
-describe('readAllEvents', () => {
-    it('returns all events', () => {
-        
+
+describe('getEventsInDateRange', () => {
+    it('returns events for today when passed today\'s date', () => {
+        const events = [
+            {
+                description: 'stop the DaVinci virus',
+                timestamp: '2021-04-12T01:13:55.064Z'
+            },
+            {
+                description: 'hack the planet',
+                timestamp: '2021-04-13T01:13:55.064Z'
+            }
+        ]
+
+        const expectedFilteredEvents = [
+            {
+                description: 'hack the planet',
+                timestamp: '2021-04-13T01:13:55.064Z'
+            }
+        ]
+
+        expect(getEventsInDateRange(events, '2021-04-13T01:13:55.064Z')).toEqual(expectedFilteredEvents)
     });
 });
 

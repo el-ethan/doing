@@ -1,5 +1,8 @@
 # Todos:
 
+- [ ] Show today only
+- [ ] Parse events once at top of command, and pass them to filtering functions
+- [ ] Show this week only
 - [ ] Create db file in a postinstall script, instead of always checking for it.
 - [ ] Update readme with screenshots.
 - [ ] Have some commands to e.g., summarize what you did in the last day, week, etc.
