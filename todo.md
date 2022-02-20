@@ -12,3 +12,4 @@
 - [ ] Use semantic releases
 - [ ] Move todos to repo
 - [ ] add --what, --now, --today, --week, --month
+- [ ] Add test that all new flags are added to docs
