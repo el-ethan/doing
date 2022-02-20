@@ -19,7 +19,8 @@ function help() {
 Available options:
 
 --help: log this help message.
---last n: log the last n events. If n is 0, log all events
+--last n: log the last n events. If n is 0, log all events.
+--today: log events captured today.
     `)
 }
 
@@ -93,6 +94,9 @@ function readEvents(nLines) {
 
 function logEvents(events) {
     console.log(events.map(formatEvent).join('\n'));
+    const lastEvent = events[events.length - 1].description
+    // log a dashed line the same length as the final event description
+    console.log(Array.from(lastEvent + '__', () => '_').join(''))
 }
 
 function readAllEvents() {
