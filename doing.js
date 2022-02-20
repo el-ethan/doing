@@ -40,9 +40,10 @@ function doing() {
     writeEvent(event)
 }
 
-function getEventsInDateRange(events, startDate, endDate) {
+function getEventsInDateRange(events, latestDate, earliestDate) {
     return events.filter(event => {
-        return event.timestamp.slice(0, 10) === startDate.slice(0, 10)
+        if (!earliestDate) return event.timestamp.slice(0, 10) === latestDate.slice(0, 10)
+        return event.timestamp > earliestDate || event.timestamp <= latestDate;
     })
 }
 

@@ -29,7 +29,7 @@ describe('lastNEvents', () => {
 
 
 describe('getEventsInDateRange', () => {
-    it('returns events for today when passed today\'s date', () => {
+    it('returns events for start date if only start date passed', () => {
         const events = [
             {
                 description: 'stop the DaVinci virus',
@@ -49,6 +49,21 @@ describe('getEventsInDateRange', () => {
         ]
 
         expect(getEventsInDateRange(events, '2021-04-13T01:13:55.064Z')).toEqual(expectedFilteredEvents)
+    });
+
+    it('returns events for range if start and end date passed', () => {
+        const events = [
+            {
+                description: 'stop the DaVinci virus',
+                timestamp: '2021-04-12T01:13:55.064Z'
+            },
+            {
+                description: 'hack the planet',
+                timestamp: '2021-04-13T01:13:55.064Z'
+            }
+        ]
+
+        expect(getEventsInDateRange(events, '2021-04-13T01:13:55.064Z', '2021-04-12T01:13:55.064Z')).toEqual(events)
     });
 });
 
