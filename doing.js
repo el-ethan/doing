@@ -31,8 +31,6 @@ Available options:
 function doing() {
     createDoingDirectoryUnlessExists();
     
-
-
     const [_a, _b, ...commandInput] = process.argv
     
     const firstPieceOfInput = commandInput[0]
